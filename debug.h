@@ -25,17 +25,26 @@ LOG_LEVEL_E log_level_g;
      log_level_g=log_level
 
 
+//used inside     
+#define log_log(fmt,level,...) \
+    do {           \
+        time_t timep; \
+        struct tm *p; \
+        time(&timep); \
+        p = localtime(&timep); \
+        printf("%04d-%02d-%02d %02d:%02d:%02d [%s] [%s:%d] [%s()] " fmt,(1900+p->tm_year), (1+p->tm_mon), p->tm_mday,p->tm_hour, p->tm_min, p->tm_sec,level, __FILE__,__LINE__,__FUNCTION__,  __VA_ARGS__); \
+    }while(0)
+
+
+
 #define LOG_FATAL(fmt,...) \
     do {           \
         if (FATAL > log_level_g){ \
             break; \
         }   \
-        time_t timep; \
-        struct tm *p; \
-        time(&timep); \
-        p = localtime(&timep); \
-        printf("%04d-%02d-%02d %02d:%02d:%02d [FATAL] [%s:%d] [%s()] " fmt,(1900+p->tm_year), (1+p->tm_mon), p->tm_mday,p->tm_hour, p->tm_min, p->tm_sec, __FILE__,__LINE__,__FUNCTION__,  __VA_ARGS__); \
+        log_log(fmt,"FATAL",__VA_ARGS__); \
     }while(0)
+
 
 
 #define LOG_INFO(fmt,...)  \
@@ -43,11 +52,7 @@ LOG_LEVEL_E log_level_g;
         if (INFO > log_level_g){ \
             break; \
         }    \
-        time_t timep; \
-        struct tm *p; \
-        time(&timep); \
-        p = localtime(&timep); \
-        printf("%04d-%02d-%02d %d:%d:%d [INFO ] [%s:%d] [%s()] " fmt,(1900+p->tm_year), (1+p->tm_mon), p->tm_mday,p->tm_hour, p->tm_min, p->tm_sec, __FILE__,__LINE__,__FUNCTION__,  __VA_ARGS__); \
+        log_log(fmt,"INFO",__VA_ARGS__); \
     }while(0)    
 
 
@@ -56,11 +61,7 @@ LOG_LEVEL_E log_level_g;
         if (WARN > log_level_g){ \
             break; \
         }    \
-        time_t timep; \
-        struct tm *p; \
-        time(&timep); \
-        p = localtime(&timep); \
-        printf("%04d-%02d-%02d %d:%d:%d [WARN ] [%s:%d] [%s()] " fmt,(1900+p->tm_year), (1+p->tm_mon), p->tm_mday,p->tm_hour, p->tm_min, p->tm_sec, __FILE__,__LINE__,__FUNCTION__,  __VA_ARGS__); \
+        log_log(fmt,"WARN",__VA_ARGS__); \
     }while(0)
 
 #define LOG_ERROR(fmt,...)  \
@@ -68,11 +69,7 @@ LOG_LEVEL_E log_level_g;
         if (ERROR > log_level_g){ \
             break; \
         }    \
-        time_t timep; \
-        struct tm *p; \
-        time(&timep); \
-        p = localtime(&timep); \
-        printf("%04d-%02d-%02d %d:%d:%d [ERROR] [%s:%d] [%s()] " fmt,(1900+p->tm_year), (1+p->tm_mon), p->tm_mday,p->tm_hour, p->tm_min, p->tm_sec, __FILE__,__LINE__,__FUNCTION__,  __VA_ARGS__); \
+        log_log(fmt,ERROR,__VA_ARGS__); \
     }while(0)
 
 
@@ -81,12 +78,9 @@ LOG_LEVEL_E log_level_g;
         if (TRACE > log_level_g){ \
             break; \
         }    \
-        time_t timep; \
-        struct tm *p; \
-        time(&timep); \
-        p = localtime(&timep); \
-        printf("%04d-%02d-%02d %d:%d:%d [TRACE] [%s:%d] [%s()] " fmt,(1900+p->tm_year), (1+p->tm_mon), p->tm_mday,p->tm_hour, p->tm_min, p->tm_sec, __FILE__,__LINE__,__FUNCTION__,  __VA_ARGS__); \
+        log_log(fmt,TRACE,__VA_ARGS__); \
     }while(0)    
+
 
     
 #endif //_DEBUG_H_

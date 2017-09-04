@@ -1,18 +1,17 @@
 #include "debug.h"
 #include <time.h>
 
+#include "check.h"
+
 void main(){
     
 
-    LOG_LEVEL_SET(INFO);
+    LOG_LEVEL_SET(WARN);
 
-    LOG_INFO("gg %d\n",3);
 
-    LOG_WARN("gg %d\n",3);
+    D_CHECK(1==0);
 
-    LOG_ERROR("gg %d\n",3);
+    LOG_FATAL("%s\n","gg");
 
-    LOG_TRACE("gg %d\n",3);
-    LOG_FATAL("gg %d\n",3);
     
 }
